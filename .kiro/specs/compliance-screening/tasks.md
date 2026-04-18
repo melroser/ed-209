@@ -6,7 +6,7 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
 
 ## Tasks
 
-- [ ] 1. Backend core — SDN client, evidence decomposer, fusion, decision, API endpoints
+- [x] 1. Backend core — SDN client, evidence decomposer, fusion, decision, API endpoints
   - [x] 1.1 Create `backend/__init__.py` and `backend/app.py` with FastAPI app, CORS middleware, Pydantic response models, and `/api/health` endpoint
     - Define all Pydantic models: `EvidenceOpinion`, `FusedOpinion`, `DecisionResult`, `SDNMatch`, `BinaryComparison`, `ScreeningResponse`
     - Add CORS middleware allowing all origins
@@ -35,23 +35,23 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
     - Handle edge case: fewer than 2 opinions → conflict = 0.0
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-  - [~] 1.5 Implement decision engine `decide(opinion: Opinion) -> str`
+  - [x] 1.5 Implement decision engine `decide(opinion: Opinion) -> str`
     - Evaluate in order: AUTO_BLOCK (b >= 0.6 AND u <= 0.25) → ESCALATE (b >= 0.35 AND u > 0.25) → AUTO_CLEAR (d >= 0.45 AND u <= 0.35) → GATHER_MORE (fallback)
     - Returns exactly one of the four decision strings
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [~] 1.6 Implement binary comparison `binary_decision(top_score: float | None) -> dict`
+  - [x] 1.6 Implement binary comparison `binary_decision(top_score: float | None) -> dict`
     - Threshold = 0.65; score >= threshold → "FLAGGED", else → "CLEARED"
     - None score → score = 0.0, decision = "CLEARED"
     - _Requirements: 6.1_
 
-  - [~] 1.7 Implement decay function `apply_decay(opinion: Opinion, days: int) -> Opinion`
+  - [x] 1.7 Implement decay function `apply_decay(opinion: Opinion, days: int) -> Opinion`
     - Convert days to seconds: `elapsed_seconds = days * 86400`
     - Half-life = 14 days = 1,209,600 seconds
     - Call with KEYWORD ARGS: `decay_opinion(opinion, elapsed_seconds=days * 86400, half_life_seconds=1_209_600)` — positional args are fragile if library adds params
     - _Requirements: 12.2, 12.3_
 
-  - [~] 1.8 Implement `GET /api/screen` endpoint — the main screening orchestrator
+  - [x] 1.8 Implement `GET /api/screen` endpoint — the main screening orchestrator
     - Accept query params: `name` (required, 1-256 chars), `country` (default "Unknown"), `entity_type` (default "individual")
     - Call `query_sdn(name)` → returns `(results, sdn_available)`
     - `sdn_available=False` → use vacuous opinions `(0, 0, 1)` for all 5 dimensions → decision will be GATHER_MORE (API down, never auto-clear)
@@ -64,7 +64,7 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
     - Measure latency with `time.time()` and include `latency_ms`
     - _Requirements: 1.1, 1.2, 1.3, 2.3, 2.4, 9.1-9.5, 10.1-10.3, 17.1-17.3_
 
-  - [~] 1.9 Implement `GET /api/screen/decay` endpoint
+  - [x] 1.9 Implement `GET /api/screen/decay` endpoint
     - Same as `/api/screen` but accepts additional `days_since_screening` query param
     - After computing fused opinion, apply `apply_decay()` before deciding
     - _Requirements: 7.1_
@@ -83,26 +83,26 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
     - **Property 6: Vacuous opinion passthrough in fusion** — fusing a non-vacuous Opinion with vacuous Opinions yields the non-vacuous Opinion
     - **Validates: Requirements 4.3**
 
-- [~] 2. Checkpoint — Verify backend core
+- [x] 2. Checkpoint — Verify backend core
   - Ensure all tests pass, ask the user if questions arise.
   - Run: `uv run uvicorn backend.app:app --reload --port 8000` and test with `curl "http://localhost:8000/api/screen?name=Ed+Sim&country=United+States&entity_type=individual"`
 
-- [ ] 3. AI analyst integration — Claude risk narratives
-  - [~] 3.1 Implement `generate_risk_assessment(entity_name, sdn_matches, fused_opinion, decision) -> str`
+- [x] 3. AI analyst integration — Claude risk narratives
+  - [x] 3.1 Implement `generate_risk_assessment(entity_name, sdn_matches, fused_opinion, decision) -> str`
     - Use `anthropic.AsyncAnthropic()` client with httpx
     - Prompt Claude for a 3-sentence risk narrative given the entity, SDN matches, fused opinion values, and decision
     - Returns plain text string — NO Opinion object
     - On API error/timeout: log error, return fallback string "AI risk assessment unavailable."
     - _Requirements: 3.1, 3.5_
 
-  - [~] 3.2 Wire AI analyst into the `/api/screen` endpoint
+  - [x] 3.2 Wire AI analyst into the `/api/screen` endpoint
     - Call `generate_risk_assessment()` AFTER SDN results are available — Claude needs the matches as input, so you CANNOT parallelize SDN + AI with asyncio.gather()
     - You CAN call Claude after SDN returns but concurrently with local fusion/decision computation if desired
     - Include the `ai_assessment` string in the `ScreeningResponse`
     - _Requirements: 11.1, 11.2_
 
-- [ ] 4. Frontend — single-page dark-themed UI
-  - [~] 4.1 Create `frontend/index.html` with HTML structure, dark theme CSS, and search form
+- [x] 4. Frontend — single-page dark-themed UI
+  - [x] 4.1 Create `frontend/index.html` with HTML structure, dark theme CSS, and search form
     - Dark enterprise theme: background #06080d, cards #111827, borders #1e293b
     - Load Inter + JetBrains Mono from Google Fonts CDN
     - Header with "ED-209" logo and "Powered by Subjective Logic" badge
@@ -112,7 +112,7 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
     - Clicking a chip fills the search bar and triggers the search
     - _Requirements: 1.1, 6.1, 6.4_
 
-  - [~] 4.2 Implement results display: status bar, projected probability, evidence cards, SDN table, AI assessment, binary comparison
+  - [x] 4.2 Implement results display: status bar, projected probability, evidence cards, SDN table, AI assessment, binary comparison
     - Status bar: colored pulsing dot (green/amber/red/blue), entity name, hit count, decision pill tag
     - Projected probability card: large monospace number colored by risk level, thin progress bar
     - 5 evidence cards in a grid: label, circular SVG ring gauge for belief, three horizontal mini-bars for b/d/u, small monospace text showing input data
@@ -129,7 +129,7 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
     - **Property 7: Percentage formatting correctness** — for any float in [0,1], formatting as percentage produces `round(value * 100, 1)`
     - **Validates: Requirements 6.3**
 
-- [~] 5. Final checkpoint — End-to-end verification
+- [x] 5. Final checkpoint — End-to-end verification
   - Ensure all tests pass, ask the user if questions arise.
   - Verify demo scenarios: "Ed Sim" → AUTO_CLEAR, "Leonard Tang" → AUTO_CLEAR (zero hits), "Brian Brackeen" → AUTO_CLEAR (zero hits)
 
