@@ -7,7 +7,7 @@ Build a hackathon-grade OFAC sanctions screening system with a FastAPI backend (
 ## Tasks
 
 - [ ] 1. Backend core — SDN client, evidence decomposer, fusion, decision, API endpoints
-  - [ ] 1.1 Create `backend/__init__.py` and `backend/app.py` with FastAPI app, CORS middleware, Pydantic response models, and `/api/health` endpoint
+  - [~] 1.1 Create `backend/__init__.py` and `backend/app.py` with FastAPI app, CORS middleware, Pydantic response models, and `/api/health` endpoint
     - Define all Pydantic models: `EvidenceOpinion`, `FusedOpinion`, `DecisionResult`, `SDNMatch`, `BinaryComparison`, `ScreeningResponse`
     - Add CORS middleware allowing all origins
     - Implement `GET /api/health` returning `{"status": "ok"}`
