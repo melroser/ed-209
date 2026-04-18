@@ -224,6 +224,7 @@ dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
     { name = "jsonld-ex", extra = ["mcp"] },
+    { name = "python-dotenv" },
     { name = "uvicorn" },
 ]
 
@@ -240,6 +241,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.136.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "jsonld-ex", extras = ["mcp"], specifier = ">=0.7.2" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "uvicorn", specifier = ">=0.44.0" },
 ]
 

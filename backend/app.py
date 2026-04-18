@@ -1,5 +1,6 @@
 """ED-209 — Uncertainty-aware OFAC sanctions screening backend."""
-
+from dotenv import load_dotenv
+load_dotenv()
 import logging
 import time
 from typing import Optional

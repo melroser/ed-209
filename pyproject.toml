@@ -9,6 +9,7 @@ dependencies = [
     "fastapi>=0.136.0",
     "httpx>=0.28.1",
     "jsonld-ex[mcp]>=0.7.2",
+    "python-dotenv>=1.2.2",
     "uvicorn>=0.44.0",
 ]
 
