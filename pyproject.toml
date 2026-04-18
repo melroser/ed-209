@@ -1,0 +1,13 @@
+[project]
+name = "ed-209"
+version = "0.1.0"
+description = "ED-209: uncertainty-aware OFAC sanctions screening with Subjective Logic"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "anthropic>=0.96.0",
+    "fastapi>=0.136.0",
+    "httpx>=0.28.1",
+    "jsonld-ex[mcp]>=0.7.2",
+    "uvicorn>=0.44.0",
+]
